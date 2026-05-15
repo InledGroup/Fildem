@@ -25,20 +25,29 @@ La aplicación de complemento es necesaria para que la extensión pueda recibir 
 sudo apt install python3-gi python3-dbus bamfdaemon libbamf3-dev libkeybinder-3.0-dev appmenu-gtk2-module appmenu-gtk3-module unity-gtk-module-common
 ```
 
-#### Instalación desde el código fuente
-1. Clona este repositorio:
+#### Instalación rápida (Recomendado)
+Si quieres instalar todo automáticamente (Extensión + Aplicación + Servicio), ejecuta el siguiente comando en tu terminal:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/InledGroup/Fildem/main/install.sh | bash
+```
+
+Este comando descargará el instalador, pedirá permisos de superusuario para las dependencias y dejará todo configurado, incluyendo el servicio de arranque automático.
+
+#### Instalación manual (Paso a paso)
+
+Si prefieres instalar los componentes por separado o estás en el directorio del repositorio:
+
+1. **Instalar la Aplicación (Complemento) y el Servicio:**
    ```bash
-   git clone https://github.com/InledGroup/Fildem.git
-   cd fildem
+   ./install_app.sh
    ```
-2. Instala la aplicación:
+2. **Instalar la Extensión de GNOME Shell:**
    ```bash
-   sudo python3 setup.py install
+   ./install_extension.sh
    ```
 
-### 2. Configuración de Módulos GTK
-
-Para que las aplicaciones exporten sus menús a Fildem, debes habilitar los módulos de menú global en tu sesión:
+### Configuración de Módulos GTK
 
 - Crea o edita el archivo `~/.gtkrc-2.0` y añade:
   ```text

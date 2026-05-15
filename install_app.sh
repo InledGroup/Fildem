@@ -42,5 +42,13 @@ else
     fi
 fi
 
+echo "🚀 Configurando el servicio systemd..."
+mkdir -p ~/.config/systemd/user
+cp "$CURRENT_DIR/fildem.service" ~/.config/systemd/user/fildem.service
+systemctl --user daemon-reload
+systemctl --user enable fildem.service
+systemctl --user restart fildem.service
+
 echo "✅ Instalación del complemento completada."
-echo "💡 Reinicia tu sesión para activar los módulos de menú global."
+echo "💡 El servicio fildem ya está corriendo y se iniciará automáticamente."
+echo "💡 Reinicia tu sesión para que los módulos GTK surtan efecto en todas las aplicaciones."

@@ -1,0 +1,13 @@
+[Unit]
+Description=Fildem Global Menu Companion Service
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/fildem
+Restart=always
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target
