@@ -3,7 +3,10 @@
 [![Inled Branding](https://img.shields.io/badge/Developed%20by-Inled-blue.svg)](https://inled.es)
 ![GNOME Shell](https://img.shields.io/badge/GNOME-45--50-green.svg)
 
-Fildem is a global menu system and HUD for the GNOME desktop. This project allows you to have a menu bar integrated into the GNOME top panel, similar to macOS or Unity, and a HUD (Heads-Up Display) searcher to quickly access menu options.
+![Fildem Global Menu & HUD Demo](demo.png)
+
+Fildem is a global menu system and HUD for the GNOME desktop.
+ This project allows you to have a menu bar integrated into the GNOME top panel, similar to macOS or Unity, and a HUD (Heads-Up Display) searcher to quickly access menu options.
 
 This version has been adapted to be fully compatible with **GNOME 48, 49, and 50**, migrating the extension to ESM and updating D-Bus communication.
 
