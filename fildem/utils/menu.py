@@ -48,11 +48,11 @@ class DbusMenu:
 			GLib.source_remove(self.collect_timer)
 
 	def _listen_menu_activated(self):
-		proxy = self.session.get_object(MyService.BUS_NAME, MyService.BUS_PATH)
+		proxy = self.session.get_object('es.inled.fildem', '/es/inled/fildem')
 		signal = proxy.connect_to_signal("MenuActivated", self.on_menu_activated)
 
 	def _listen_hud_activated(self):
-		proxy = self.session.get_object(MyService.BUS_NAME, MyService.BUS_PATH)
+		proxy = self.session.get_object('es.inled.fildem', '/es/inled/fildem')
 		signal = proxy.connect_to_signal("HudActivated", self.on_hud_activated)
 
 	def on_menu_activated(self, menu: str, x: int):
@@ -93,7 +93,7 @@ class DbusMenu:
 		self.app = None
 
 	def _echo_onoff(self, on: bool):
-		self.proxy = dbus.SessionBus().get_object(MyService.BUS_NAME, MyService.BUS_PATH)
+		self.proxy = dbus.SessionBus().get_object('es.inled.fildem', '/es/inled/fildem')
 		self.proxy.EchoMenuOnOff(on)
 
 	def _handle_shortcuts(self, top_level_menus):
@@ -126,7 +126,7 @@ class DbusMenu:
 	def _send_msg(self, top_level_menus):
 		if len(top_level_menus) == 0:
 			top_level_menus = dbus.Array(signature="s")
-		proxy = self.session.get_object(MyService.BUS_NAME, MyService.BUS_PATH)
+		proxy = self.session.get_object('es.inled.fildem', '/es/inled/fildem')
 		proxy.EchoSendTopLevelMenus(top_level_menus)
 
 	@property

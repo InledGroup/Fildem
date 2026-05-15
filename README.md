@@ -1,88 +1,84 @@
-# Fildem
+# Fildem Global Menu & HUD
 
-## Global menu for Gnome
+[![Inled Branding](https://img.shields.io/badge/Developed%20by-Inled-blue.svg)](https://inled.es)
+![GNOME Shell](https://img.shields.io/badge/GNOME-45--50-green.svg)
 
-[![Buy Me A Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg)](https://buymeacoffee.com/gonza)
+Fildem es un sistema de menú global y HUD para el escritorio GNOME. Este proyecto permite tener una barra de menú integrada en el panel superior de GNOME, similar a macOS o Unity, y un buscador HUD (Heads-Up Display) para acceder rápidamente a las opciones de menú.
 
-![Fildem](https://user-images.githubusercontent.com/19943481/95288612-1d272a80-083f-11eb-9400-be88f61e054d.png)
+Esta versión ha sido adaptada para ser totalmente compatible con **GNOME 48, 49 y 50**, migrando la extensión a ESM y actualizando la comunicación D-Bus.
 
-This project is a fork of gnomehud with the addition of a global menu bar. It consists of a Gnome Shell extension and an external program, you must install both for the application to work.
+## Requisitos y Componentes
 
-You can also bring a HUD menu with Alt + Space (on Xorg).
+Fildem consta de dos partes que deben estar instaladas y funcionando simultáneamente:
 
-This is a prototype, as I don’t know if people will like it or how long it will last until devs nuke it, so feel free to let me know your opinion.
+1.  **Extensión de GNOME Shell (`fildem@inled.es`)**: Gestiona la interfaz en el panel de GNOME.
+2.  **Aplicación de Complemento (Python)**: Gestiona la extracción de menús de las aplicaciones y la lógica del HUD.
 
-## Installation
+## Instalación
 
-### Extension
+### 1. Instalación de la Aplicación (Complemento)
 
-To install the extension, download it from the [Gnome extensions website](https://extensions.gnome.org/extension/4114/fildem-global-menu/).
+La aplicación de complemento es necesaria para que la extensión pueda recibir los menús de las ventanas activas.
 
-### Ubuntu
-
-Download the .deb file from the releases section and run `sudo apt install ./fildem_*.deb`
-
-### Arch
-
-Download the .zst file from the releases section and run `sudo pacman -U ./python3-fildem*.zst`
-
-## Configuration
-
-In order for the application to work, you must configure the following files (applies to all operating systems):
-
-- Create the file `~/.gtkrc-2.0` and append `gtk-modules="appmenu-gtk-module"`
-- The file `~/.config/gtk-3.0/settings.ini` should have the line `gtk-modules="appmenu-gtk-module"` under [Settings]. If it doesn’t exist create it and paste the following
-
-```
-[Settings]
-gtk-modules="appmenu-gtk-module"
+#### Dependencias (Ubuntu/Debian)
+```bash
+sudo apt install python3-gi python3-dbus bamfdaemon libbamf3-dev libkeybinder-3.0-dev appmenu-gtk2-module appmenu-gtk3-module unity-gtk-module-common
 ```
 
-## Running
+#### Instalación desde el código fuente
+1. Clona este repositorio:
+   ```bash
+   git clone https://github.com/InledGroup/Fildem.git
+   cd fildem
+   ```
+2. Instala la aplicación:
+   ```bash
+   sudo python3 setup.py install
+   ```
 
-After installation you’ll have two executables, `fildem` and `fildem-hud`.  To check if it works use the first one. `fildem-hud` is for using the HUD, if you are on Xorg, you already have it bound to Alt + Space. If you are on Wayland, you can bind some keybinding to that command.
+### 2. Configuración de Módulos GTK
 
-## Customization
+Para que las aplicaciones exporten sus menús a Fildem, debes habilitar los módulos de menú global en tu sesión:
 
-### Menu always visible
+- Crea o edita el archivo `~/.gtkrc-2.0` y añade:
+  ```text
+  gtk-modules="appmenu-gtk-module"
+  ```
+- Crea o edita el archivo `~/.config/gtk-3.0/settings.ini` y añade bajo la sección `[Settings]`:
+  ```ini
+  [Settings]
+  gtk-modules="appmenu-gtk-module"
+  ```
 
-By default, the menu is visible when you hover the mouse on the panel. If you want the menu to be always visible, unselect “Show menu only when the mouse is over the panel” in the preferences of the extension.
+### 3. Instalación de la Extensión
 
-### AppMenu Button always visible
+1. Copia la carpeta de la extensión a tu directorio local de extensiones:
+   ```bash
+   cp -r fildem@inled.es ~/.local/share/gnome-shell/extensions/
+   ```
+2. Reinicia GNOME Shell (Alt+F2, escribe `r` y pulsa Enter en X11, o cierra sesión y vuelve a entrar en Wayland).
+3. Habilita la extensión mediante la aplicación de "Extensiones" o "Retoques".
 
-The AppMenu button shows the application name or window title (if you have some extension) in the panel. By default, the fildem extension hides that label when the menu is being shown. If you want it to be always visible, you can unselect “Hide App Menu label” in the preferences of the extension.
+## Uso
 
-### Reduce space between buttons
-
-If the menu shown on the panel is shifted with relation to the one that appears, like this:
-
-![Screenshot from 2021-06-17 11-09-00](https://user-images.githubusercontent.com/864630/122452193-da852880-cf5d-11eb-8ca8-27e481ab682c.png)
-
-you can tweak the "Button padding" in the preferences window of the extension (accessible from the tweak tool).
-
-### Remove space in between buttons
-
-In some gnome themes, the buttons have a small spacing between them. This can make the buttons easy to miss and unfocusing our window if it’s not maximized. To fix this, add this somewhere on your `gnome-shell.css` theme:
-
+### Ejecución del servicio
+Para que el menú global funcione, el servicio de Fildem debe estar ejecutándose. Puedes iniciarlo manualmente con:
+```bash
+fildem
 ```
-#panel #panelLeft {
-  spacing: 0px; }
-#panel #panelLeft .panel-button {
-  spacing: 0px; }
-```
+*(Se recomienda añadir `fildem` a tus aplicaciones de inicio en GNOME).*
 
-## Running the program at startup
+### HUD (Heads-Up Display)
+El HUD permite buscar acciones del menú pulsando una combinación de teclas.
+- En **Xorg**: Pulsa `Alt + Espacio`.
+- En **Wayland**: Debes crear un atajo de teclado personalizado en la configuración de GNOME que ejecute el comando `fildem-hud`.
 
-If you manage to make the program work and want to have it running automatically at startup you can add an entry to `gnome-session-properties` with the name of the program and the path to execute it.
+## Personalización
 
-## Create a shortcut for the HUD on Wayland
+Puedes configurar el comportamiento de la extensión desde sus preferencias:
+- **Button paddings**: Ajusta el espaciado entre los botones del menú.
+- **Show menu only when hover**: Oculta el menú a menos que pases el ratón por encima del panel.
+- **Hide app menu**: Oculta el nombre de la aplicación activa para dejar más espacio al menú global.
 
-Since it’s not possible to create a shortcut from the app on Wayland, you have to create it yourself. Go to Settings → Keyboard Shorcuts and create a shortcut that executes `inithud.sh`.
-
-## State of the Apps
-
-To see a list of apps that work check [the wiki](https://github.com/gonzaarcr/Fildem/wiki/Using#state-of-the-apps)
-
-## Installation troubleshooting
-
-If you have any questions on how to get it to work, please don’t create an issue, use [this discussion](https://github.com/gonzaarcr/Fildem/discussions/33).
+## Créditos
+Originalmente creado por Gonzalo. Adaptado y mantenido para versiones modernas de GNOME por **Inled**.

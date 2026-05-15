@@ -274,7 +274,7 @@ class CommandWindow(Gtk.ApplicationWindow):
 class GlobalMenu(Gtk.Application):
 
 	def __init__(self, dbus_menu, initial_menu=None, x=-1, *args, **kwargs):
-		kwargs['application_id'] = 'org.gonzaarcr.fildemapp'
+		kwargs['application_id'] = 'es.inled.fildemapp'
 		super(Gtk.Application, self).__init__(*args, **kwargs)
 
 		self.dbus_menu = dbus_menu

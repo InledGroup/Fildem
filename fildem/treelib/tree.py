@@ -38,7 +38,12 @@ import codecs
 import json
 import uuid
 from copy import deepcopy
-from future.utils import python_2_unicode_compatible, iteritems
+# from future.utils import python_2_unicode_compatible, iteritems
+import sys
+
+def iteritems(d, **kwargs):
+    return iter(d.items(**kwargs))
+
 
 try:
     from StringIO import StringIO
@@ -51,7 +56,7 @@ from .node import Node
 __author__ = 'chenxm'
 
 
-@python_2_unicode_compatible
+# @python_2_unicode_compatible
 class Tree(object):
     """Tree objects are made of Node(s) stored in _nodes dictionary."""
 

@@ -112,7 +112,7 @@ class WindowManager(object):
 			cls._get_matcher().connect('active-window-changed', cls._window_switched_bamf)
 		else:
 			session = dbus.SessionBus()
-			proxy  = session.get_object('com.gonzaarcr.appmenu', '/com/gonzaarcr/appmenu')
+			proxy  = session.get_object('es.inled.fildem', '/es/inled/fildem')
 			signal = proxy.connect_to_signal("WindowSwitchedSignal", cls._window_switched)
 
 	@classmethod

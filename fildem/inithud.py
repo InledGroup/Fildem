@@ -4,7 +4,7 @@ import dbus
 
 def main():
 	session = dbus.SessionBus()
-	proxy = session.get_object('com.gonzaarcr.appmenu', '/com/gonzaarcr/appmenu')
+	proxy = session.get_object('es.inled.fildem', '/es/inled/fildem')
 	proxy.EmitHudActivated()
 
 if __name__ == "__main__":
