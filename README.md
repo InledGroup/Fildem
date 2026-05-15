@@ -3,91 +3,91 @@
 [![Inled Branding](https://img.shields.io/badge/Developed%20by-Inled-blue.svg)](https://inled.es)
 ![GNOME Shell](https://img.shields.io/badge/GNOME-45--50-green.svg)
 
-Fildem es un sistema de menú global y HUD para el escritorio GNOME. Este proyecto permite tener una barra de menú integrada en el panel superior de GNOME, similar a macOS o Unity, y un buscador HUD (Heads-Up Display) para acceder rápidamente a las opciones de menú.
+Fildem is a global menu system and HUD for the GNOME desktop. This project allows you to have a menu bar integrated into the GNOME top panel, similar to macOS or Unity, and a HUD (Heads-Up Display) searcher to quickly access menu options.
 
-Esta versión ha sido adaptada para ser totalmente compatible con **GNOME 48, 49 y 50**, migrando la extensión a ESM y actualizando la comunicación D-Bus.
+This version has been adapted to be fully compatible with **GNOME 48, 49, and 50**, migrating the extension to ESM and updating D-Bus communication.
 
-## Requisitos y Componentes
+## Requirements and Components
 
-Fildem consta de dos partes que deben estar instaladas y funcionando simultáneamente:
+Fildem consists of two parts that must be installed and running simultaneously:
 
-1.  **Extensión de GNOME Shell (`fildem@inled.es`)**: Gestiona la interfaz en el panel de GNOME.
-2.  **Aplicación de Complemento (Python)**: Gestiona la extracción de menús de las aplicaciones y la lógica del HUD.
+1.  **GNOME Shell Extension (`fildem@inled.es`)**: Manages the interface in the GNOME panel.
+2.  **Companion App (Python)**: Manages menu extraction from applications and HUD logic.
 
-## Instalación
+## Installation
 
-### 1. Instalación de la Aplicación (Complemento)
+### 1. Companion App Installation
 
-La aplicación de complemento es necesaria para que la extensión pueda recibir los menús de las ventanas activas.
+The companion app is required for the extension to receive menus from active windows.
 
-#### Dependencias (Ubuntu/Debian)
+#### Dependencies (Ubuntu/Debian)
 ```bash
 sudo apt install python3-gi python3-dbus bamfdaemon libbamf3-dev libkeybinder-3.0-dev appmenu-gtk2-module appmenu-gtk3-module unity-gtk-module-common
 ```
 
-#### Instalación rápida (Recomendado)
-Si quieres instalar todo automáticamente (Extensión + Aplicación + Servicio), ejecuta el siguiente comando en tu terminal:
+#### Quick Installation (Recommended)
+If you want to install everything automatically (Extension + App + Service), run the following command in your terminal:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/InledGroup/Fildem/main/install.sh | bash
 ```
 
-Este comando descargará el instalador, pedirá permisos de superusuario para las dependencias y dejará todo configurado, incluyendo el servicio de arranque automático.
+This command will download the installer, request superuser permissions for dependencies, and configure everything, including the auto-start service.
 
-#### Instalación manual (Paso a paso)
+#### Manual Installation (Step by step)
 
-Si prefieres instalar los componentes por separado o estás en el directorio del repositorio:
+If you prefer to install components separately or you are in the repository directory:
 
-1. **Instalar la Aplicación (Complemento) y el Servicio:**
+1. **Install the Companion App and Service:**
    ```bash
    ./install_app.sh
    ```
-2. **Instalar la Extensión de GNOME Shell:**
+2. **Install the GNOME Shell Extension:**
    ```bash
    ./install_extension.sh
    ```
 
-### Configuración de Módulos GTK
+### GTK Module Configuration
 
-- Crea o edita el archivo `~/.gtkrc-2.0` y añade:
+- Create or edit the file `~/.gtkrc-2.0` and add:
   ```text
   gtk-modules="appmenu-gtk-module"
   ```
-- Crea o edita el archivo `~/.config/gtk-3.0/settings.ini` y añade bajo la sección `[Settings]`:
+- Create or edit the file `~/.config/gtk-3.0/settings.ini` and add under the `[Settings]` section:
   ```ini
   [Settings]
   gtk-modules="appmenu-gtk-module"
   ```
 
-### 3. Instalación de la Extensión
+### 3. Extension Installation
 
-1. Copia la carpeta de la extensión a tu directorio local de extensiones:
+1. Copy the extension folder to your local extensions directory:
    ```bash
    cp -r fildem@inled.es ~/.local/share/gnome-shell/extensions/
    ```
-2. Reinicia GNOME Shell (Alt+F2, escribe `r` y pulsa Enter en X11, o cierra sesión y vuelve a entrar en Wayland).
-3. Habilita la extensión mediante la aplicación de "Extensiones" o "Retoques".
+2. Restart GNOME Shell (Alt+F2, type `r` and press Enter on X11, or log out and back in on Wayland).
+3. Enable the extension using the "Extensions" or "Tweaks" app.
 
-## Uso
+## Usage
 
-### Ejecución del servicio
-Para que el menú global funcione, el servicio de Fildem debe estar ejecutándose. Puedes iniciarlo manualmente con:
+### Running the service
+For the global menu to work, the Fildem service must be running. You can start it manually with:
 ```bash
 fildem
 ```
-*(Se recomienda añadir `fildem` a tus aplicaciones de inicio en GNOME).*
+*(It is recommended to add `fildem` to your GNOME startup applications).*
 
 ### HUD (Heads-Up Display)
-El HUD permite buscar acciones del menú pulsando una combinación de teclas.
-- En **Xorg**: Pulsa `Alt + Espacio`.
-- En **Wayland**: Debes crear un atajo de teclado personalizado en la configuración de GNOME que ejecute el comando `fildem-hud`.
+The HUD allows you to search for menu actions by pressing a key combination.
+- On **Xorg**: Press `Alt + Space`.
+- On **Wayland**: You must create a custom keyboard shortcut in GNOME settings that executes the command `fildem-hud`.
 
-## Personalización
+## Customization
 
-Puedes configurar el comportamiento de la extensión desde sus preferencias:
-- **Button paddings**: Ajusta el espaciado entre los botones del menú.
-- **Show menu only when hover**: Oculta el menú a menos que pases el ratón por encima del panel.
-- **Hide app menu**: Oculta el nombre de la aplicación activa para dejar más espacio al menú global.
+You can configure the extension's behavior from its preferences:
+- **Button paddings**: Adjust the spacing between menu buttons.
+- **Show menu only when hover**: Hides the menu unless you hover over the panel.
+- **Hide app menu**: Hides the active application's name to give more space to the global menu.
 
-## Créditos
-Originalmente creado por Gonzalo. Adaptado y mantenido para versiones modernas de GNOME por **Inled**.
+## Credits
+Originally created by Gonzalo. Adapted and maintained for modern GNOME versions by **Inled**.

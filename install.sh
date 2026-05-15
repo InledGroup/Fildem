@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-# Colores para la salida
+# Output colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
+YELLOW='\1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
@@ -12,36 +12,36 @@ echo -e "${BLUE}===========================================${NC}"
 echo -e "${BLUE}   Fildem Global Menu - Unified Installer  ${NC}"
 echo -e "${BLUE}===========================================${NC}"
 
-# Verificar si git está instalado
+# Check if git is installed
 if ! command -v git &> /dev/null; then
-    echo -e "${YELLOW}📦 Git no está instalado. Instalándolo...${NC}"
+    echo -e "${YELLOW}📦 Git is not installed. Installing...${NC}"
     sudo apt update && sudo apt install -y git
 fi
 
-# Crear un directorio temporal para la instalación
+# Create a temporary directory for installation
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
-echo -e "${BLUE}📥 Clonando repositorio desde GitHub...${NC}"
+echo -e "${BLUE}📥 Cloning repository from GitHub...${NC}"
 git clone https://github.com/InledGroup/Fildem.git "$TEMP_DIR"
 
 cd "$TEMP_DIR"
 
-# Dar permisos de ejecución a los scripts internos
+# Give execution permissions to internal scripts
 chmod +x install_app.sh install_extension.sh
 
-echo -e "${BLUE}📦 Instalando la aplicación de complemento...${NC}"
+echo -e "${BLUE}📦 Installing companion app...${NC}"
 ./install_app.sh
 
-echo -e "${BLUE}🧩 Instalando la extensión de GNOME Shell...${NC}"
+echo -e "${BLUE}🧩 Installing GNOME Shell extension...${NC}"
 ./install_extension.sh
 
 echo -e "${GREEN}===========================================${NC}"
-echo -e "${GREEN}      ¡Instalación completada con éxito!    ${NC}"
+echo -e "${GREEN}      Installation completed successfully!  ${NC}"
 echo -e "${GREEN}===========================================${NC}"
-echo -e "${YELLOW}IMPORTANTE:${NC}"
-echo -e "1. ${BLUE}Reinicia GNOME Shell${NC} (Alt+F2, escribe 'r' y pulsa Enter, o cierra sesión en Wayland)."
-echo -e "2. ${BLUE}Activa la extensión${NC} 'Fildem Global Menu' en la aplicación 'Extensiones'."
-echo -e "3. ${BLUE}Cierra sesión y vuelve a entrar${NC} para que los menús funcionen en todas las aplicaciones."
+echo -e "${YELLOW}IMPORTANT:${NC}"
+echo -e "1. ${BLUE}Restart GNOME Shell${NC} (Alt+F2, type 'r' and press Enter, or log out on Wayland)."
+echo -e "2. ${BLUE}Enable the 'Fildem Global Menu' extension${NC} in the 'Extensions' app."
+echo -e "3. ${BLUE}Log out and back in${NC} for menus to work in all applications."
 echo -e ""
-echo -e "Desarrollado con ❤️ por ${BLUE}Inled${NC} (https://inled.es)"
+echo -e "Developed with ❤️ by ${BLUE}Inled${NC} (https://inled.es)"

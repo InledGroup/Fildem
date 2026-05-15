@@ -1,26 +1,26 @@
 #!/bin/bash
 set -e
 
-# Obtener la ruta absoluta del directorio actual
+# Get absolute path of current directory
 CURRENT_DIR=$(pwd)
 
-echo "📦 Actualizando índices de paquetes..."
+echo "📦 Updating package indices..."
 pkexec apt update
 
-echo "📦 Instalando dependencias principales (GTK3)..."
+echo "📦 Installing main dependencies (GTK3)..."
 pkexec apt install -y python3-gi python3-dbus bamfdaemon libbamf3-dev libkeybinder-3.0-dev \
     appmenu-gtk3-module python3-setuptools
 
-echo "📦 Intentando instalar paquetes de compatibilidad legada (opcionales)..."
-# Intentamos instalar GTK2 y Unity modules pero no fallamos si no existen
-pkexec apt install -y appmenu-gtk2-module unity-gtk-module-common 2>/dev/null || echo "⚠️  Nota: Algunos paquetes legados (GTK2/Unity) no están disponibles en tu sistema. Se omitirán."
+echo "📦 Attempting to install legacy compatibility packages (optional)..."
+# We try to install GTK2 and Unity modules but don't fail if they don't exist
+pkexec apt install -y appmenu-gtk2-module unity-gtk-module-common 2>/dev/null || echo "⚠️  Note: Some legacy packages (GTK2/Unity) are not available on your system. They will be skipped."
 
-echo "⚙️ Instalando el complemento Python (Fildem Service)..."
-# Entramos al directorio del proyecto antes de ejecutar setup.py para que encuentre README.md
+echo "⚙️ Installing Python companion (Fildem Service)..."
+# Enter project directory before running setup.py so it finds README.md
 pkexec sh -c "cd '$CURRENT_DIR' && python3 setup.py install"
 
-echo "📝 Configurando módulos GTK..."
-# GTK 2 (si existe el archivo o el soporte)
+echo "📝 Configuring GTK modules..."
+# GTK 2 (if file or support exists)
 if [ ! -f ~/.gtkrc-2.0 ]; then
     touch ~/.gtkrc-2.0
 fi
@@ -28,7 +28,7 @@ if ! grep -q "appmenu-gtk-module" ~/.gtkrc-2.0; then
     echo 'gtk-modules="appmenu-gtk-module"' >> ~/.gtkrc-2.0
 fi
 
-# GTK 3 (Principal para GNOME 45+)
+# GTK 3 (Main for GNOME 45+)
 mkdir -p ~/.config/gtk-3.0
 if [ ! -f ~/.config/gtk-3.0/settings.ini ]; then
     echo -e "[Settings]\ngtk-modules=\"appmenu-gtk-module\"" > ~/.config/gtk-3.0/settings.ini
@@ -42,13 +42,13 @@ else
     fi
 fi
 
-echo "🚀 Configurando el servicio systemd..."
+echo "🚀 Configuring systemd service..."
 mkdir -p ~/.config/systemd/user
 cp "$CURRENT_DIR/fildem.service" ~/.config/systemd/user/fildem.service
 systemctl --user daemon-reload
 systemctl --user enable fildem.service
 systemctl --user restart fildem.service
 
-echo "✅ Instalación del complemento completada."
-echo "💡 El servicio fildem ya está corriendo y se iniciará automáticamente."
-echo "💡 Reinicia tu sesión para que los módulos GTK surtan efecto en todas las aplicaciones."
+echo "✅ Companion installation completed."
+echo "💡 The fildem service is now running and will start automatically."
+echo "💡 Restart your session for GTK modules to take effect in all applications."
